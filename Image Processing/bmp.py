@@ -53,6 +53,7 @@ class Picture2Bmp(object):
 
         else:
             print('Picture2Bmp.jpg2Bmp ERROR 0')
+            return None
 
     def pictures2Bmp_Folder(self, show=False, save=False):
         """
@@ -92,7 +93,7 @@ class Picture2Bmp(object):
             return saveRoute
         else:
             print('Picture2Bmp.pictures2Bmp_Folder ERROR 0')
-            return
+            return None
 
 
 class CutBmp(object):
@@ -136,7 +137,7 @@ class CutBmp(object):
             newBmp_mat = bmp_mat[rowCutFor:rowCutFor + row, colCutFor:colCutFor + col]
         else:
             print('CutBmp.section ERROR 0')
-            return
+            return None
 
         # 显示与保存
         newBmp_mat = Image.fromarray(newBmp_mat)
@@ -208,6 +209,7 @@ class Bmp2BWP(object):
                 return saveRoute
         else:
             print('Bmp2BWP.bmp2BWP ERROR 0')
+            return None
 
     def bmp2BWP_Folder(self, flip=False, show=False, save=False):
         """
@@ -262,7 +264,7 @@ class Bmp2BWP(object):
             return saveRoute
         else:
             print('Bmp2BWP.bmp2BWP_Folder ERROR 0')
-            return
+            return None
 
 
 class PrintText(object):
@@ -281,9 +283,12 @@ class PrintText(object):
     def __del__(self):
         pass
 
-    def printText(self, show=False, save=False):
+    def printText(self, txtPage=8, txtCol=128, txtPageBits=8, show=False, save=False):
         """
         将黑白图输出成十六进制文本
+        :param txtPage: 生成的TXT的页数
+        :param txtCol: 生成的TXT的列数
+        :param txtPageBits: 生成的TXT的每一页的位数
         :param show: 是否显示
         :param save: 是否保存
         :return: 保存的TXT的路径
@@ -292,17 +297,21 @@ class PrintText(object):
         if self.bmpRoute != '':
             fileSuffix = os.path.splitext(self.bmpRoute)[1]
             if fileSuffix != '':
-                text = np.mat(np.random.randint(0, 1, (128, 8)))  # 这个矩阵为了适合OLED，应竖着看
+                text = np.mat(np.random.randint(0, 1, (txtCol, txtPage)))  # 这个矩阵为了适合OLED，应竖着看
                 bmp_mat = mpimg.imread(self.bmpRoute)
                 bmpRow = bmp_mat.shape[0]
                 bmpCol = bmp_mat.shape[1]
 
+                if (bmpRow < txtPage * txtPageBits) or (bmpCol < txtCol):
+                    print('PrintText.printText ERROR 2')
+                    return None
+
                 # 计算得到对应的OLED图片数组
-                for i in range(bmpCol):  # 列
-                    for j in range(bmpRow//8):  # 页
-                        for k in range(8):  # 字节
+                for i in range(txtCol):  # 列
+                    for j in range(txtPage):  # 页
+                        for k in range(txtPageBits):  # 位
                             text[i, j] <<= 1
-                            if bmp_mat[j*8+k, i] > 0:
+                            if bmp_mat[j*txtPageBits+k, i] > 0:
                                 text[i, j] += 1
 
                 # 得到文件名字
@@ -327,11 +336,11 @@ class PrintText(object):
 
             else:
                 print('PrintText.printText ERROR 1')
-                return
+                return None
 
         else:
             print('PrintText.printText ERROR 0')
-            return
+            return None
 
 
 if __name__ == '__main__':

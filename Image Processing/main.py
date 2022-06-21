@@ -76,6 +76,7 @@ def demo_3(bmpRoute='', saveRoute='', show=False, save=False):
 
 def jpeg2Txt(pictureRoute='', folderRoute='', saveRoute='',
              flip=False, row=64, col=128, rowOffset=0, colOffset=0,
+             txtPage=8, txtCol=128, txtPageBits=8,
              showEveryStep=False, saveEveryStep=False,
              showBmp=False, showCutBmp=False, showBWP=False, showTxt=False,
              saveBmp=False, saveCutBmp=False, saveBWP=False, saveTxt=False):
@@ -89,6 +90,9 @@ def jpeg2Txt(pictureRoute='', folderRoute='', saveRoute='',
     :param col: 裁剪后的列数
     :param rowOffset: 裁剪时的行偏移
     :param colOffset: 裁剪时的列偏移
+    :param txtPage: 页数
+    :param txtCol: 列数
+    :param txtPageBits: 每一页的位数
     :param showEveryStep: 显示每一次转化
     :param saveEveryStep: 保存每一步转化
     :param showBmp: 显示BMP
@@ -106,20 +110,37 @@ def jpeg2Txt(pictureRoute='', folderRoute='', saveRoute='',
         # 图片格式转化
         BMP = bmp.Picture2Bmp(pictureRoute=pictureRoute, saveRoute=saveRoute)
         bmpRoute = BMP.picture2Bmp(show=showEveryStep | showBmp, save=saveEveryStep | saveBmp)
-        print('Picture2Bmp done')
+        if bmpRoute is not None:
+            print('Picture2Bmp done')
+            print('bmpRoute = {0}'.format(bmpRoute))
+        else:
+            print('Picture2Bmp ERROR')
         # 裁剪BMP
         cutBMP = bmp.CutBmp(bmpRoute=bmpRoute, saveRoute=saveRoute)
         cutBMPRoute = cutBMP.section(row=row, col=col, rowOffset=rowOffset, colOffset=colOffset,
                                      show=showEveryStep | showCutBmp, save=saveEveryStep | saveCutBmp)
-        print('CutBmp done')
+        if cutBMPRoute is not None:
+            print('CutBmp done')
+            print('cutBMPRoute = {0}'.format(cutBMPRoute))
+        else:
+            print('CutBmp ERROR')
         # BMP转成BWP
         BWP = bmp.Bmp2BWP(bmpRoute=cutBMPRoute, saveRoute=saveRoute)
         BWPRoute = BWP.bmp2BWP(flip=flip, show=showEveryStep | showBWP, save=saveEveryStep | saveBWP)
-        print('Bmp2BWP done')
+        if BWPRoute is not None:
+            print('Bmp2BWP done')
+            print('BWPRoute = {0}'.format(BWPRoute))
+        else:
+            print('Bmp2BWP ERROR')
         # BWP转成TXT
         TXT = bmp.PrintText(bmpRoute=BWPRoute, saveRoute=saveRoute)
-        TXTRoute = TXT.printText(show=showEveryStep | showTxt, save=saveEveryStep | saveTxt)
-        print('PrintText done')
+        TXTRoute = TXT.printText(txtCol=txtCol, txtPage=txtPage, txtPageBits=txtPageBits,
+                                 show=showEveryStep | showTxt, save=saveEveryStep | saveTxt)
+        if TXTRoute is not None:
+            print('PrintText done')
+            print('TXTRoute = {0}'.format(TXTRoute))
+        else:
+            print('PrintText ERROR')
         return TXTRoute
 
 
@@ -138,9 +159,10 @@ def main():
     # demo_3(bmpRoute='D:/Python Program/Image Processing/pictures/processed/BWP/cut/可达鸭抱头.bmp',
     #        saveRoute='D:/Python Program/Image Processing/pictures/processed/BWP/cut/txt',
     #        show=True, save=True)
-    jpeg2Txt(pictureRoute='D:/Python Program/Image Processing/pictures/可达鸭抱头.jpeg',
+    jpeg2Txt(pictureRoute='D:/Python Program/Image Processing/pictures/可达鸭斜着（小图）.jpg',
              saveRoute='D:/Python Program/Image Processing/pictures/processed',
-             flip=True, row=64, col=128, rowOffset=-50, colOffset=-20,
+             flip=True, row=733, col=700, rowOffset=0, colOffset=0,
+             txtPage=91, txtCol=700, txtPageBits=8,
              showEveryStep=False, saveEveryStep=True,
              showBmp=False, showCutBmp=False, showBWP=False, showTxt=False,
              saveBmp=False, saveCutBmp=False, saveBWP=False, saveTxt=False)
