@@ -76,7 +76,7 @@ def demo_3(bmpRoute='', saveRoute='', show=False, save=False):
 
 def jpeg2Txt(pictureRoute='', folderRoute='', saveRoute='',
              flip=False, row=64, col=128, rowOffset=0, colOffset=0,
-             txtPage=8, txtCol=128, txtPageBits=8,
+             startPoint=(0, 0), txtPage=8, txtCol=128, txtPageBits=8,
              showEveryStep=False, saveEveryStep=False,
              showBmp=False, showCutBmp=False, showBWP=False, showTxt=False,
              saveBmp=False, saveCutBmp=False, saveBWP=False, saveTxt=False):
@@ -90,6 +90,7 @@ def jpeg2Txt(pictureRoute='', folderRoute='', saveRoute='',
     :param col: 裁剪后的列数
     :param rowOffset: 裁剪时的行偏移
     :param colOffset: 裁剪时的列偏移
+    :param startPoint: 起始取模坐标点，两个分量都大于零
     :param txtPage: 页数
     :param txtCol: 列数
     :param txtPageBits: 每一页的位数
@@ -134,7 +135,7 @@ def jpeg2Txt(pictureRoute='', folderRoute='', saveRoute='',
             print('Bmp2BWP ERROR')
         # BWP转成TXT
         TXT = bmp.PrintText(bmpRoute=BWPRoute, saveRoute=saveRoute)
-        TXTRoute = TXT.printText(txtCol=txtCol, txtPage=txtPage, txtPageBits=txtPageBits,
+        TXTRoute = TXT.printText(startPoint=startPoint, txtCol=txtCol, txtPage=txtPage, txtPageBits=txtPageBits,
                                  show=showEveryStep | showTxt, save=saveEveryStep | saveTxt)
         if TXTRoute is not None:
             print('PrintText done')
@@ -162,7 +163,7 @@ def main():
     jpeg2Txt(pictureRoute='D:/Python Program/Image Processing/pictures/可达鸭斜着（小图）.jpg',
              saveRoute='D:/Python Program/Image Processing/pictures/processed',
              flip=True, row=733, col=700, rowOffset=0, colOffset=0,
-             txtPage=91, txtCol=700, txtPageBits=8,
+             startPoint=(257, 302), txtPage=8, txtCol=128, txtPageBits=8,
              showEveryStep=False, saveEveryStep=True,
              showBmp=False, showCutBmp=False, showBWP=False, showTxt=False,
              saveBmp=False, saveCutBmp=False, saveBWP=False, saveTxt=False)

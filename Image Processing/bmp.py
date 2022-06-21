@@ -283,9 +283,10 @@ class PrintText(object):
     def __del__(self):
         pass
 
-    def printText(self, txtPage=8, txtCol=128, txtPageBits=8, show=False, save=False):
+    def printText(self, startPoint=(0, 0), txtPage=8, txtCol=128, txtPageBits=8, show=False, save=False):
         """
         将黑白图输出成十六进制文本
+        :param startPoint: 起始取模坐标点，两个分量都大于零
         :param txtPage: 生成的TXT的页数
         :param txtCol: 生成的TXT的列数
         :param txtPageBits: 生成的TXT的每一页的位数
@@ -293,6 +294,10 @@ class PrintText(object):
         :param save: 是否保存
         :return: 保存的TXT的路径
         """
+
+        if (startPoint[0] < 0) or (startPoint[1] < 0):
+            print('PrintText.printText ERROR 3')
+            return None
 
         if self.bmpRoute != '':
             fileSuffix = os.path.splitext(self.bmpRoute)[1]
@@ -302,7 +307,8 @@ class PrintText(object):
                 bmpRow = bmp_mat.shape[0]
                 bmpCol = bmp_mat.shape[1]
 
-                if (bmpRow < txtPage * txtPageBits) or (bmpCol < txtCol):
+                if ((bmpRow < txtPage * txtPageBits + startPoint[1])
+                        or (bmpCol < txtCol + startPoint[0])):
                     print('PrintText.printText ERROR 2')
                     return None
 
@@ -311,7 +317,7 @@ class PrintText(object):
                     for j in range(txtPage):  # 页
                         for k in range(txtPageBits):  # 位
                             text[i, j] <<= 1
-                            if bmp_mat[j*txtPageBits+k, i] > 0:
+                            if bmp_mat[j*txtPageBits+k+startPoint[0], i+startPoint[1]] > 0:
                                 text[i, j] += 1
 
                 # 得到文件名字
@@ -344,8 +350,6 @@ class PrintText(object):
 
 
 if __name__ == '__main__':
-    test = np.mat(np.random.randint(0, 1, (3, 4)))
-    row = test.shape[0]
-    col = test.shape[1]
+    point = (1, 2)
 
-    print(test, row, col)
+    print(point, point[0], point[1])
