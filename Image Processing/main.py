@@ -1,11 +1,7 @@
 import os
-import numpy as np
-import pandas as pd
 import bmp
-from serials import serials
+import serials
 from time import sleep
-
-__name__ = '__main__'
 
 
 def demo_0(pictureRoute='', folderRoute='', saveRoute='', show=False, save=False):
@@ -361,17 +357,17 @@ def main():
     # demo_3(bmpRoute='D:/Python Program/Image Processing/pictures/processed/BWP/cut/可达鸭抱头.bmp',
     #        saveRoute='D:/Python Program/Image Processing/pictures/processed/BWP/cut/txt',
     #        show=True, save=True)
-    # video2Pics(videoRoute='D:/Python Program/Image Processing/videos/video.mp4',
-    #            saveRoute='D:/Python Program/Image Processing/videos/pics')
-    # jpeg2Txt_resize(folderRoute='D:/Python Program/Image Processing/videos/pics',
-    #                 saveRoute='D:/Python Program/Image Processing/videos/pics/txt',
+    # video2Pics(videoRoute='D:/code/Python Program/Image Processing/videos/bailan/video.mp4',
+    #            saveRoute='D:/code/Python Program/Image Processing/videos/bailan/pics')
+    # jpeg2Txt_resize(folderRoute='D:/code/Python Program/Image Processing/videos/bailan/pics',
+    #                 saveRoute='D:/code/Python Program/Image Processing/videos/bailan/pics/txt',
     #                 flip=True, row=64, col=128,
     #                 startPoint=(0, 0), txtPage=8, txtCol=128, txtPageBits=8,
     #                 showEveryStep=False, saveEveryStep=True,
     #                 showBmp=False, showCutBmp=False, showBWP=False, showTxt=False,
     #                 saveBmp=False, saveCutBmp=False, saveBWP=False, saveTxt=False)
-    communicationWithSingleChip(folderRoute='D:/Python Program/Image Processing/videos/pics/txt',
-                                port='com4', baudrate=115200)
+    # communicationWithSingleChip(folderRoute='D:/Python Program/Image Processing/videos/pics/txt',
+    #                             port='com4', baudrate=115200)
     print('Done')
     return
 
